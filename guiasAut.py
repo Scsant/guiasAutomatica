@@ -26,35 +26,19 @@ if not os.path.exists(output_folder):
 # Configuração do ChromeDriver e do diretório temporário para o PDF
 temp_dir = tempfile.gettempdir()  # Diretório temporário padrão do sistema
 
-# Configuração das opções do Chrome para o Selenium
-chrome_options = Options()
-chrome_options.add_argument('--headless')  # Necessário para ambientes sem interface gráfica
-chrome_options.add_argument('--disable-gpu')  # Evita erros de GPU
-chrome_options.add_argument('--no-sandbox')  # Necessário para execução em servidores remotos
-chrome_options.add_argument('--disable-dev-shm-usage')  # Evita problemas de memória compartilhada
-chrome_options.add_argument('--ignore-certificate-errors')
-chrome_options.add_argument('--disable-popup-blocking')
-chrome_options.add_argument('--allow-running-insecure-content')
-chrome_options.add_experimental_option("prefs", {
-    "download.default_directory": temp_dir,               # Define o diretório de download temporário
-    "plugins.always_open_pdf_externally": True,           # Força o download do PDF em vez de abrir
-    "download.prompt_for_download": False,                # Evita prompt de download
-    "download.directory_upgrade": True,                   # Garante que o diretório seja atualizado
-    "safebrowsing.enabled": True                          # Habilita navegação segura para downloads
-})
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from webdriver_manager.chrome import ChromeDriverManager
 
 def iniciar_driver():
-    """Função para iniciar o driver do Selenium."""
     chrome_options = Options()
     chrome_options.add_argument('--headless')  # Necessário para rodar sem interface gráfica
-    chrome_options.add_argument('--no-sandbox')  # Necessário para rodar em ambientes remotos
-    chrome_options.add_argument('--disable-dev-shm-usage')  # Evita problemas de memória
-    chrome_options.add_argument('--disable-gpu')  # Evita erros de GPU
-    chrome_options.add_argument('--disable-popup-blocking')
-    chrome_options.add_argument('--ignore-certificate-errors')
+    chrome_options.add_argument('--disable-gpu')
+    chrome_options.add_argument('--no-sandbox')
 
-    # Inicializar o ChromeDriver
-    service = Service(ChromeDriverManager().install())
+    # Detectar a versão correta do ChromeDriver com base no navegador instalado
+    service = Service(ChromeDriverManager(version="120.0.6099.0").install())  # Altere para a versão correta
     driver = webdriver.Chrome(service=service, options=chrome_options)
     return driver
 

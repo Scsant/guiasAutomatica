@@ -17,8 +17,9 @@ from selenium.webdriver.firefox.options import Options  # Para configurar o Fire
 
 @st.cache_resource
 def instalar_geckodriver():
-    os.system('sbase install geckodriver')  # Instala o GeckoDriver
-    os.system('ln -s /home/appuser/venv/lib/python3.7/site-packages/seleniumbase/drivers/geckodriver /home/appuser/venv/bin/geckodriver')
+    os.system('sbase install geckodriver')
+    os.system('mv geckodriver ./geckodriver')
+
 
 instalar_geckodriver()  # Chama a instalação na inicialização do Streamlit
 
@@ -37,16 +38,21 @@ temp_dir = tempfile.gettempdir()  # Diretório temporário padrão do sistema
 
 
 
-def iniciar_driver():
-    """Inicializa o GeckoDriver (Firefox) em modo headless no Streamlit Cloud."""
-    options = Options()
-    options.add_argument("--headless")  # Roda em modo headless
-    options.add_argument("--disable-gpu")
-    options.add_argument("--no-sandbox")
+from selenium import webdriver
+from selenium.webdriver.firefox.service import Service
+from selenium.webdriver.firefox.options import Options
 
-    # Inicia o WebDriver com o GeckoDriver
-    driver = webdriver.Firefox(options=options)
+def iniciar_driver():
+    options = Options()
+    options.add_argument('--headless')  # Executa sem abrir o navegador
+    options.add_argument('--disable-gpu')
+    options.add_argument('--no-sandbox')
+
+    # Use o caminho do geckodriver no diretório do projeto
+    service = Service('./geckodriver')
+    driver = webdriver.Firefox(service=service, options=options)
     return driver
+
 
 
 def executar_automacao(driver, numero_doc_input, valor_input, chave_nf_input):

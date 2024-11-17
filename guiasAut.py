@@ -153,16 +153,6 @@ def run_selenium(logpath: str, url: str, numero_doc_input: str, valor_input: str
         
         pdfs_gerados = []  # Lista para armazenar os PDFs gerados
 
-def show_selenium_log(logpath: str):
-    if os.path.exists(logpath):
-        with open(logpath) as f:
-            content = f.read()
-        st.code(body=content, language='log', line_numbers=True)
-    else:
-        st.error('Arquivo de log do Selenium não encontrado.', icon='🔥')
-
-    
-
     for i, chave_nf_input in enumerate(chaves_nf, start=1):
         st.write(f"Processando chave de acesso ({i}/{len(chaves_nf)}): {chave_nf_input}")
 
@@ -282,6 +272,23 @@ def show_selenium_log(logpath: str):
     
     time.sleep(4)
     return pdfs_gerados
+
+
+
+
+
+
+def show_selenium_log(logpath: str):
+    if os.path.exists(logpath):
+        with open(logpath) as f:
+            content = f.read()
+        st.code(body=content, language='log', line_numbers=True)
+    else:
+        st.error('Arquivo de log do Selenium não encontrado.', icon='🔥')
+
+    
+
+
 
 
 # Interface Streamlit

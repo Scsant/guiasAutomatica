@@ -44,11 +44,19 @@ chrome_options.add_experimental_option("prefs", {
 })
 
 def iniciar_driver():
-    """Função para iniciar o driver do Selenium no Streamlit Cloud."""
-    service = Service(ChromeDriverManager().install())  # Baixa o ChromeDriver dinamicamente
+    """Função para iniciar o driver do Selenium."""
+    chrome_options = Options()
+    chrome_options.add_argument('--headless')  # Necessário para rodar sem interface gráfica
+    chrome_options.add_argument('--no-sandbox')  # Necessário para rodar em ambientes remotos
+    chrome_options.add_argument('--disable-dev-shm-usage')  # Evita problemas de memória
+    chrome_options.add_argument('--disable-gpu')  # Evita erros de GPU
+    chrome_options.add_argument('--disable-popup-blocking')
+    chrome_options.add_argument('--ignore-certificate-errors')
+
+    # Inicializar o ChromeDriver
+    service = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service, options=chrome_options)
     return driver
-
 
 def executar_automacao(driver, numero_doc_input, valor_input, chave_nf_input):
     """Executa o fluxo de automação no Selenium."""

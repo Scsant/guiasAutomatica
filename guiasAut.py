@@ -17,16 +17,15 @@ from selenium.webdriver.firefox.service import Service
 from selenium.webdriver import FirefoxOptions, Firefox
 import os
 import platform
+import os
 
+# Configurar o caminho do Geckodriver no Streamlit Cloud
+geckodriver_path = os.path.join(os.getcwd(), "geckodriver")  # Caminho para o driver no projeto
 
+# Tornar o Geckodriver executável
+if not os.access(geckodriver_path, os.X_OK):
+    os.chmod(geckodriver_path, 0o755)
 
-@st.cache_resource
-def instalar_geckodriver():
-    os.system('sbase install geckodriver')
-    os.system('mv geckodriver ./geckodriver')
-
-
-instalar_geckodriver()  # Chama a instalação na inicialização do Streamlit
 
 
 # Nome da pasta onde os PDFs serão armazenados
@@ -42,24 +41,16 @@ temp_dir = tempfile.gettempdir()  # Diretório temporário padrão do sistema
 
 
 
+from selenium.webdriver.firefox.service import Service
+from selenium.webdriver import Firefox, FirefoxOptions
+
 def iniciar_driver():
     options = FirefoxOptions()
-    options.add_argument("--headless")  # Executar em modo sem interface gráfica
+    options.add_argument("--headless")  # Executar sem interface gráfica
     options.add_argument("--no-sandbox")
 
-    # Configurar o caminho do driver
-    if platform.system() == "Windows":
-        geckodriver_path = os.path.join(os.getcwd(), "geckodriver.exe")
-    else:
-        # Para Linux ou Streamlit Cloud
-        geckodriver_path = "/usr/local/bin/geckodriver"  # Altere conforme necessário
-
-    # Verifique se o driver existe
-    if not os.path.exists(geckodriver_path):
-        raise FileNotFoundError(f"Geckodriver não encontrado no caminho: {geckodriver_path}")
-
-    # Configurar o serviço do Firefox com o driver
-    service = Service(geckodriver_path)
+    # Configurar o serviço do Firefox com o driver no Streamlit Cloud
+    service = Service(geckodriver_path)  # Use o caminho configurado
     driver = Firefox(service=service, options=options)
     return driver
 

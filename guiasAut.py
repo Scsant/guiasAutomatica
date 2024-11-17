@@ -13,6 +13,11 @@ from selenium.webdriver.common.action_chains import ActionChains
 import shutil  # Para copiar arquivos entre unidades
 import zipfile
 from selenium.webdriver.firefox.options import Options  # Para configurar o Firefox (headless, etc.)
+from selenium.webdriver.firefox.service import Service
+from selenium.webdriver import FirefoxOptions, Firefox
+import os
+import platform
+
 
 
 @st.cache_resource
@@ -38,20 +43,23 @@ temp_dir = tempfile.gettempdir()  # Diretório temporário padrão do sistema
 
 
 
-from selenium import webdriver
-from selenium.webdriver.firefox.service import Service
-from selenium.webdriver.firefox.options import Options
 
 def iniciar_driver():
-    options = Options()
-    options.add_argument('--headless')  # Executa sem abrir o navegador
-    options.add_argument('--disable-gpu')
-    options.add_argument('--no-sandbox')
+    options = FirefoxOptions()
+    options.add_argument("--headless")  # Rodar em modo headless
+    options.add_argument("--no-sandbox")
 
-    # Use o caminho do geckodriver no diretório do projeto
-    service = Service('./geckodriver')
-    driver = webdriver.Firefox(service=service, options=options)
+    # Verificar o sistema operacional
+    if platform.system() == "Windows":
+        geckodriver_path = os.path.join(os.getcwd(), "geckodriver.exe")
+    else:
+        geckodriver_path = "/usr/local/bin/geckodriver"  # Caminho no Streamlit Cloud
+
+    # Configuração do serviço
+    service = Service(geckodriver_path)
+    driver = Firefox(service=service, options=options)
     return driver
+
 
 
 

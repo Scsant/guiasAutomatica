@@ -15,8 +15,7 @@ import zipfile
 from selenium.webdriver.firefox.options import Options  # Para configurar o Firefox (headless, etc.)
 
 
-# Instalar e configurar o GeckoDriver
-@st.experimental_singleton
+@st.cache_resource
 def instalar_geckodriver():
     os.system('sbase install geckodriver')  # Instala o GeckoDriver
     os.system('ln -s /home/appuser/venv/lib/python3.7/site-packages/seleniumbase/drivers/geckodriver /home/appuser/venv/bin/geckodriver')

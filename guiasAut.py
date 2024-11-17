@@ -37,14 +37,18 @@ temp_dir = tempfile.gettempdir()  # Diretório temporário padrão do sistema
 
 
 def iniciar_driver():
-    chrome_options = Options()
-    chrome_options.add_argument('--headless')  # Necessário para rodar sem interface gráfica
-    chrome_options.add_argument('--disable-gpu')
-    chrome_options.add_argument('--no-sandbox')
+    """Inicializa o driver do Selenium com o ChromeDriver adequado."""
+    options = webdriver.ChromeOptions()
+    options.add_argument('--headless')  # Rodar em modo headless
+    options.add_argument('--disable-gpu')
+    options.add_argument('--no-sandbox')
 
-    # Detectar a versão correta do ChromeDriver com base no navegador instalado
-    service = Service(ChromeDriverManager(version="120.0.6099.0").install())  # Altere para a versão correta
-    driver = webdriver.Chrome(service=service, options=chrome_options)
+    # Especificar a versão do ChromeDriver
+    chrome_driver_path = ChromeDriverManager().install()
+
+    # Configurar o serviço com o ChromeDriver instalado
+    service = Service(chrome_driver_path)
+    driver = webdriver.Chrome(service=service, options=options)
     return driver
 
 def executar_automacao(driver, numero_doc_input, valor_input, chave_nf_input):

@@ -42,20 +42,23 @@ temp_dir = tempfile.gettempdir()  # Diretório temporário padrão do sistema
 
 
 
-
-
 def iniciar_driver():
     options = FirefoxOptions()
-    options.add_argument("--headless")  # Rodar em modo headless
+    options.add_argument("--headless")  # Executar em modo sem interface gráfica
     options.add_argument("--no-sandbox")
 
-    # Verificar o sistema operacional
+    # Configurar o caminho do driver
     if platform.system() == "Windows":
         geckodriver_path = os.path.join(os.getcwd(), "geckodriver.exe")
     else:
-        geckodriver_path = "/usr/local/bin/geckodriver"  # Caminho no Streamlit Cloud
+        # Para Linux ou Streamlit Cloud
+        geckodriver_path = "/usr/local/bin/geckodriver"  # Altere conforme necessário
 
-    # Configuração do serviço
+    # Verifique se o driver existe
+    if not os.path.exists(geckodriver_path):
+        raise FileNotFoundError(f"Geckodriver não encontrado no caminho: {geckodriver_path}")
+
+    # Configurar o serviço do Firefox com o driver
     service = Service(geckodriver_path)
     driver = Firefox(service=service, options=options)
     return driver

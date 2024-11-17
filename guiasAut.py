@@ -16,6 +16,14 @@ import shutil  # Para copiar arquivos entre unidades
 import zipfile
 from webdriver_manager.chrome import ChromeDriverManager  # Para baixar o ChromeDriver dinamicamente
 
+
+# Obter a versão do Chromium
+chromium_version = os.popen("chromium --version").read().strip()
+
+# Mostrar no Streamlit
+st.write(f"Versão do Chromium instalada: {chromium_version}")
+
+
 # Nome da pasta onde os PDFs serão armazenados
 output_folder = "pdfs_emitidos"
 
@@ -26,10 +34,7 @@ if not os.path.exists(output_folder):
 # Configuração do ChromeDriver e do diretório temporário para o PDF
 temp_dir = tempfile.gettempdir()  # Diretório temporário padrão do sistema
 
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
-from webdriver_manager.chrome import ChromeDriverManager
+
 
 def iniciar_driver():
     chrome_options = Options()

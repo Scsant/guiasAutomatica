@@ -1,0 +1,15 @@
+chromium-driver
+chromium
+fonts-liberation
+libnss3
+libnspr4
+libx11-xcb1
+libxcomposite1
+libxcursor1
+libxi6
+libxtst6
+libxrandr2
+libfontconfig1
+libxdamage1
+libasound2
+libpangocairo-1.0-0

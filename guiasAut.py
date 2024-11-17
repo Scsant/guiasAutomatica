@@ -13,10 +13,8 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 import shutil  # Para copiar arquivos entre unidades
-import os
 import zipfile
-
-
+from webdriver_manager.chrome import ChromeDriverManager  # Para baixar o ChromeDriver dinamicamente
 
 # Nome da pasta onde os PDFs serão armazenados
 output_folder = "pdfs_emitidos"
@@ -25,15 +23,15 @@ output_folder = "pdfs_emitidos"
 if not os.path.exists(output_folder):
     os.makedirs(output_folder)
 
-
-#chave_nf_input = st.text_input("Digite a chave da Nota Fiscal:", value="50241150640054013097550010000000641544445729")
-
 # Configuração do ChromeDriver e do diretório temporário para o PDF
-caminho_chromedriver = os.path.join(os.getcwd(), "chromedriver.exe")
 temp_dir = tempfile.gettempdir()  # Diretório temporário padrão do sistema
 
 # Configuração das opções do Chrome para o Selenium
 chrome_options = Options()
+chrome_options.add_argument('--headless')  # Necessário para ambientes sem interface gráfica
+chrome_options.add_argument('--disable-gpu')  # Evita erros de GPU
+chrome_options.add_argument('--no-sandbox')  # Necessário para execução em servidores remotos
+chrome_options.add_argument('--disable-dev-shm-usage')  # Evita problemas de memória compartilhada
 chrome_options.add_argument('--ignore-certificate-errors')
 chrome_options.add_argument('--disable-popup-blocking')
 chrome_options.add_argument('--allow-running-insecure-content')
@@ -46,10 +44,11 @@ chrome_options.add_experimental_option("prefs", {
 })
 
 def iniciar_driver():
-    """Função para iniciar o driver do Selenium."""
-    service = Service(caminho_chromedriver)
+    """Função para iniciar o driver do Selenium no Streamlit Cloud."""
+    service = Service(ChromeDriverManager().install())  # Baixa o ChromeDriver dinamicamente
     driver = webdriver.Chrome(service=service, options=chrome_options)
     return driver
+
 
 def executar_automacao(driver, numero_doc_input, valor_input, chave_nf_input):
     """Executa o fluxo de automação no Selenium."""

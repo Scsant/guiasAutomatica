@@ -55,6 +55,7 @@ def iniciar_driver():
     return driver
 
 
+st.write(f"Caminho do Geckodriver: {geckodriver_path}")
 
 
 def executar_automacao(driver, numero_doc_input, valor_input, chave_nf_input):

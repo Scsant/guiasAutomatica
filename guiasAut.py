@@ -5,23 +5,23 @@ import time
 import tempfile
 from io import BytesIO
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 import shutil  # Para copiar arquivos entre unidades
 import zipfile
-from webdriver_manager.chrome import ChromeDriverManager  # Para baixar o ChromeDriver dinamicamente
+from selenium.webdriver.firefox.options import Options  # Para configurar o Firefox (headless, etc.)
 
 
-# Obter a versão do Chromium
-chromium_version = os.popen("chromium --version").read().strip()
+# Instalar e configurar o GeckoDriver
+@st.experimental_singleton
+def instalar_geckodriver():
+    os.system('sbase install geckodriver')  # Instala o GeckoDriver
+    os.system('ln -s /home/appuser/venv/lib/python3.7/site-packages/seleniumbase/drivers/geckodriver /home/appuser/venv/bin/geckodriver')
 
-# Mostrar no Streamlit
-st.write(f"Versão do Chromium instalada: {chromium_version}")
+instalar_geckodriver()  # Chama a instalação na inicialização do Streamlit
 
 
 # Nome da pasta onde os PDFs serão armazenados
@@ -36,20 +36,19 @@ temp_dir = tempfile.gettempdir()  # Diretório temporário padrão do sistema
 
 
 
+
+
 def iniciar_driver():
-    """Inicializa o driver do Selenium com a versão correta do ChromeDriver."""
-    options = webdriver.ChromeOptions()
-    options.add_argument('--headless')  # Executar sem interface gráfica
-    options.add_argument('--disable-gpu')
-    options.add_argument('--no-sandbox')
+    """Inicializa o GeckoDriver (Firefox) em modo headless no Streamlit Cloud."""
+    options = Options()
+    options.add_argument("--headless")  # Roda em modo headless
+    options.add_argument("--disable-gpu")
+    options.add_argument("--no-sandbox")
 
-    # Forçar a versão correta do ChromeDriver (compatível com Chromium 120)
-    chrome_driver_path = ChromeDriverManager(version="120.0.6099.224").install()
-
-    # Configurar o serviço com o ChromeDriver correto
-    service = Service(chrome_driver_path)
-    driver = webdriver.Chrome(service=service, options=options)
+    # Inicia o WebDriver com o GeckoDriver
+    driver = webdriver.Firefox(options=options)
     return driver
+
 
 def executar_automacao(driver, numero_doc_input, valor_input, chave_nf_input):
     """Executa o fluxo de automação no Selenium."""

@@ -12,7 +12,6 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
-import pyautogui
 import shutil  # Para copiar arquivos entre unidades
 import os
 import zipfile
@@ -62,11 +61,6 @@ def executar_automacao(driver, numero_doc_input, valor_input, chave_nf_input):
     # Adicione uma espera para a janela de certificado carregar
     time.sleep(10)  # Ajuste conforme necessário para garantir que a caixa de diálogo apareça
 
-    # Usar o PyAutoGUI para clicar no botão "OK" na posição (649, 363)
-    pyautogui.click(x=649, y=363)
-
-    # Aguarde um tempo extra para que o site processe a seleção do certificado
-    time.sleep(2)
     
     # Selecionar o botão de rádio com valor "Sim"
     radio_opcao_sim = WebDriverWait(driver, 10).until(

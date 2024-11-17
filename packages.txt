@@ -13,3 +13,5 @@ libfontconfig1
 libxdamage1
 libasound2
 libpangocairo-1.0-0
+chromium
+chromium-driver

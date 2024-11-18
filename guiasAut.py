@@ -83,7 +83,7 @@ def run_selenium(logpath: str, url: str, numero_doc_input: str, valor_input: str
         )
         radio_opcao_sim.click()
         time.sleep(2)
-    
+    st.write("PASSEI POR AQUI")
         # Avançar para a próxima página
         botao_avancar = driver.find_element(By.ID, "avancar")
         botao_avancar.click()
@@ -104,7 +104,7 @@ def run_selenium(logpath: str, url: str, numero_doc_input: str, valor_input: str
     
         # Pressionar Enter para selecionar a opção filtrada automaticamente
         search_bar.send_keys(Keys.ENTER)
-    
+        st.write("PASSEI POR AQUI")
         time.sleep(2)
     
         # Esperar que o botão "Avançar" esteja carregado e clique nele
@@ -127,7 +127,7 @@ def run_selenium(logpath: str, url: str, numero_doc_input: str, valor_input: str
         search_bar.send_keys("IE")
         time.sleep(1)  # Breve espera para garantir que o filtro seja aplicado
         search_bar.send_keys(Keys.ENTER)
-    
+        st.write("PASSEI POR AQUI")
         # Localizar e preencher o campo "Número do Documento"
         numero_doc_field = WebDriverWait(driver, 10).until(
             EC.element_to_be_clickable((By.XPATH, '//*[@id="NumeroDoc"]'))
@@ -159,7 +159,7 @@ def run_selenium(logpath: str, url: str, numero_doc_input: str, valor_input: str
         valor_field.send_keys(valor_input)
         
         pdfs_gerados = []  # Lista para armazenar os PDFs gerados
-
+        st.write("PASSEI POR AQUI")
     for i, chave_nf_input in enumerate(chaves_nf, start=1):
         st.write(f"Processando chave de acesso ({i}/{len(chaves_nf)}): {chave_nf_input}")
 
@@ -210,7 +210,7 @@ def run_selenium(logpath: str, url: str, numero_doc_input: str, valor_input: str
         )
         avancar_button.click()
         time.sleep(8)
-
+        st.write("PASSEI POR AQUI")
         # Nome do PDF final baseado no número da página
         numero_texto = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.XPATH, '//text[@class="span8"]'))

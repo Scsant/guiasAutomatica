@@ -52,7 +52,14 @@ if not os.path.exists(output_folder):
 # Configuração do ChromeDriver e do diretório temporário para o PDF
 temp_dir = tempfile.gettempdir()  # Diretório temporário padrão do sistema
 
-
+def get_webdriver_service(logpath: str) -> Service:
+    service = Service(
+        executable_path=get_chromedriver_path(),
+        log_output=logpath,  # Arquivo de log
+    )
+    service.creation_timeout = 60  # Aumentar o tempo limite de inicialização
+    return service
+st.write(f"ChromeDriver Path: {get_chromedriver_path()}")
 
 
 
@@ -274,14 +281,7 @@ def run_selenium(logpath: str, url: str, numero_doc_input: str, valor_input: str
     return pdfs_gerados
 
 
-def get_webdriver_service(logpath: str) -> Service:
-    service = Service(
-        executable_path=get_chromedriver_path(),
-        log_output=logpath,  # Arquivo de log
-    )
-    service.creation_timeout = 60  # Aumentar o tempo limite de inicialização
-    return service
-st.write(f"ChromeDriver Path: {get_chromedriver_path()}")
+
 
 
 

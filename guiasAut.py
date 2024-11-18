@@ -274,6 +274,14 @@ def run_selenium(logpath: str, url: str, numero_doc_input: str, valor_input: str
     return pdfs_gerados
 
 
+def get_webdriver_service(logpath: str) -> Service:
+    service = Service(
+        executable_path=get_chromedriver_path(),
+        log_output=logpath,  # Arquivo de log
+    )
+    service.creation_timeout = 60  # Aumentar o tempo limite de inicialização
+    return service
+st.write(f"ChromeDriver Path: {get_chromedriver_path()}")
 
 
 

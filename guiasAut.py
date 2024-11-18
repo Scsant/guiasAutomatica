@@ -1,5 +1,8 @@
+import re
 import os
 import time
+import tempfile
+from io import BytesIO
 import shutil
 import streamlit as st
 from selenium import webdriver
@@ -10,6 +13,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import tempfile
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.action_chains import ActionChains
 
 
 # Função para obter o caminho do ChromeDriver

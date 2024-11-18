@@ -83,7 +83,7 @@ def run_selenium(logpath: str, url: str, numero_doc_input: str, valor_input: str
         )
         radio_opcao_sim.click()
         time.sleep(2)
-    st.write("PASSEI POR AQUI")
+        st.write("PASSEI POR AQUI")
         # Avançar para a próxima página
         botao_avancar = driver.find_element(By.ID, "avancar")
         botao_avancar.click()

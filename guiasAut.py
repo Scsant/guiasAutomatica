@@ -16,10 +16,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 
 
-# Função para obter o caminho do ChromeDriver
-@st.cache_resource(show_spinner=False)
-def get_chromedriver_path() -> str:
-    return shutil.which('chromedriver')
+
 
 # Função para configurar o ChromeDriver e suas opções
 @st.cache_resource(show_spinner=False)
@@ -36,8 +33,7 @@ def get_webdriver():
 
 # Função para executar o Selenium
 def run_selenium(logpath: str, url: str, numero_doc_input: str, valor_input: str, chave_nf_input: str) -> None:
-    service = get_webdriver_service(logpath)  # Obtém o serviço do WebDriver
-    options = get_webdriver_options()  # Configura as opções para o Chrome
+
     with get_webdriver() as driver:
         driver.get("https://servicos.efazenda.ms.gov.br/sgae/EmissaoDAEMSdeICMS/")
         time.sleep(5)  # Tempo para o certificado carregar (ajuste conforme necessário)

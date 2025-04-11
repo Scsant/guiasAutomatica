@@ -17,16 +17,26 @@ from selenium.webdriver.common.action_chains import ActionChains
 import chromedriver_autoinstaller
 
 
+
 def get_webdriver():
+    # Define diretório temporário para armazenar o chromedriver
+    temp_dir = tempfile.mkdtemp()
+    os.environ["CHROMEDRIVER_AUTOINSTALLER_PATH"] = temp_dir
+
+    # Instala o chromedriver nessa pasta temporária
     chromedriver_autoinstaller.install()
+
     options = Options()
-    # options.add_argument("--headless")  # Comentado para exibir navegador
+    # options.add_argument("--headless")  # Ative se quiser ocultar o navegador
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--disable-gpu")
     options.add_argument("--window-size=1920x1080")
     options.add_argument('--ignore-certificate-errors')
+
+    # Inicializa o Chrome com as opções
     return webdriver.Chrome(options=options)
+
 
 # Função para executar o Selenium
 def run_selenium(logpath: str, url: str, numero_doc_input: str, valor_input: str, chave_nf_input: str) -> None:

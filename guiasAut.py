@@ -23,55 +23,22 @@ def get_chromedriver_path() -> str:
 
 # Função para configurar o ChromeDriver e suas opções
 @st.cache_resource(show_spinner=False)
-def get_webdriver_options(proxy: str = None, socksStr: str = None) -> Options:
+def get_webdriver():
+    chromedriver_autoinstaller.install()
     options = Options()
-    options.add_argument("--headless")
+    # options.add_argument("--headless")  # Comentado para exibir navegador
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--disable-gpu")
-    options.add_argument("--disable-features=NetworkService")
     options.add_argument("--window-size=1920x1080")
-    options.add_argument("--disable-features=VizDisplayCompositor")
     options.add_argument('--ignore-certificate-errors')
-    if proxy and socksStr:
-        options.add_argument(f"--proxy-server={socksStr}://{proxy}")
-    return options
-
-# Configuração do serviço do ChromeDriver
-def get_webdriver_service(logpath: str) -> Service:
-    service = Service(
-        executable_path=get_chromedriver_path(),
-        log_output=logpath,
-    )
-    return service
-
-
-# Nome da pasta onde os PDFs serão armazenados
-output_folder = "pdfs_emitidos"
-
-# Criar a pasta se ela não existir
-if not os.path.exists(output_folder):
-    os.makedirs(output_folder)
-
-# Configuração do ChromeDriver e do diretório temporário para o PDF
-temp_dir = tempfile.gettempdir()  # Diretório temporário padrão do sistema
-
-def get_webdriver_service(logpath: str) -> Service:
-    service = Service(
-        executable_path=get_chromedriver_path(),
-        log_output=logpath,  # Arquivo de log
-    )
-    service.creation_timeout = 60  # Aumentar o tempo limite de inicialização
-    return service
-st.write(f"ChromeDriver Path: {get_chromedriver_path()}")
-
-
+    return webdriver.Chrome(options=options)
 
 # Função para executar o Selenium
 def run_selenium(logpath: str, url: str, numero_doc_input: str, valor_input: str, chave_nf_input: str) -> None:
     service = get_webdriver_service(logpath)  # Obtém o serviço do WebDriver
     options = get_webdriver_options()  # Configura as opções para o Chrome
-    with webdriver.Chrome(service=service, options=options) as driver:
+    with get_webdriver() as driver:
         driver.get("https://servicos.efazenda.ms.gov.br/sgae/EmissaoDAEMSdeICMS/")
         time.sleep(5)  # Tempo para o certificado carregar (ajuste conforme necessário)
         

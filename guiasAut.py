@@ -17,25 +17,21 @@ from selenium.webdriver.common.action_chains import ActionChains
 import chromedriver_autoinstaller
 
 
+from webdriver_manager.chrome import ChromeDriverManager
 
 def get_webdriver():
-    # Define diretório temporário para armazenar o chromedriver
-    temp_dir = tempfile.mkdtemp()
-    os.environ["CHROMEDRIVER_AUTOINSTALLER_PATH"] = temp_dir
-
-    # Instala o chromedriver nessa pasta temporária
-    chromedriver_autoinstaller.install()
-
     options = Options()
     # options.add_argument("--headless")  # Ative se quiser ocultar o navegador
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--disable-gpu")
     options.add_argument("--window-size=1920x1080")
-    options.add_argument('--ignore-certificate-errors')
+    options.add_argument("--ignore-certificate-errors")
 
-    # Inicializa o Chrome com as opções
-    return webdriver.Chrome(options=options)
+    # Usa webdriver-manager para gerenciar o driver automaticamente
+    service = Service(ChromeDriverManager().install())
+    return webdriver.Chrome(service=service, options=options)
+
 
 
 # Função para executar o Selenium

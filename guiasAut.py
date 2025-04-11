@@ -17,10 +17,6 @@ from selenium.webdriver.common.action_chains import ActionChains
 import chromedriver_autoinstaller
 
 
-
-
-# Função para configurar o ChromeDriver e suas opções
-@st.cache_resource(show_spinner=False)
 def get_webdriver():
     chromedriver_autoinstaller.install()
     options = Options()

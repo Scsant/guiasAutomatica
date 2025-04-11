@@ -2,4 +2,5 @@ streamlit
 selenium
 sbase
 seleniumbase
+chromedriver-autoinstaller
 

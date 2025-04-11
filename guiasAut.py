@@ -14,6 +14,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import tempfile
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
+import chromedriver_autoinstaller
 
 
 

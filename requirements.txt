@@ -3,4 +3,5 @@ selenium
 sbase
 seleniumbase
 chromedriver-autoinstaller
+webdriver-manager
 

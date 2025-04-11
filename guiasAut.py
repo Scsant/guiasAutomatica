@@ -19,16 +19,27 @@ import chromedriver_autoinstaller
 
 from webdriver_manager.chrome import ChromeDriverManager
 
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from webdriver_manager.chrome import ChromeDriverManager
+
 def get_webdriver():
     options = Options()
-    # options.add_argument("--headless")  # Ative se quiser ocultar o navegador
+    options.add_argument("--headless")  # Executa sem interface gráfica (necessário no Cloud)
+    options.add_argument("--disable-gpu")
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
-    options.add_argument("--disable-gpu")
+    options.add_argument("--remote-debugging-port=9222")  # Necessário para evitar DevToolsActivePort error
+    options.add_argument("--disable-software-rasterizer")
     options.add_argument("--window-size=1920x1080")
-    options.add_argument("--ignore-certificate-errors")
+    options.add_argument("--single-process")  # Corrige em ambientes com restrição de fork
+    options.add_argument("--disable-extensions")
+    options.add_argument("--disable-background-networking")
+    options.add_argument("--disable-sync")
+    options.add_argument("--metrics-recording-only")
+    options.add_argument("--disable-default-apps")
 
-    # Usa webdriver-manager para gerenciar o driver automaticamente
     service = Service(ChromeDriverManager().install())
     return webdriver.Chrome(service=service, options=options)
 

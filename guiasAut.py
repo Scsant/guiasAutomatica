@@ -16,16 +16,14 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 import chromedriver_autoinstaller
 
+import os
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.options import Options
 
 def get_webdriver():
     options = Options()
 
-    # Flags obrigatórias para ambientes como Streamlit Cloud
-    options.add_argument("--headless")
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--disable-gpu")
@@ -41,10 +39,12 @@ def get_webdriver():
     options.add_argument("--no-first-run")
     options.add_argument("--no-default-browser-check")
 
-    # Força o download da versão compatível com o Chromium 120
-    service = Service(ChromeDriverManager(version="120.0.6099.224").install())
-    driver = webdriver.Chrome(service=service, options=options)
-    return driver
+    # Caminho para o chromedriver incluído no repositório
+    chromedriver_path = os.path.join(os.getcwd(), "chromedriver")
+    service = Service(executable_path=chromedriver_path)
+
+    return webdriver.Chrome(service=service, options=options)
+
 
 
 
